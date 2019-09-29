@@ -9,4 +9,19 @@ Aplicação web que simula um mensageiro pessoal através do protocolo WebSocket
 * [Pedro Stürmer](https://github.com/pedrost/) - Frontend
 * Rafael Guardiano - Frontend
 
+## Requisitos
+* [NPM instalado](https://www.npmjs.com/)
+* [NodeJS instalado](https://nodejs.org/en/) - Utilizando v10.13.0
+
+## Iniciando
+### Instalando dependências
+```
+npm i
+```
+### Rodando localmente
+Em ambiente de desenvolvimento:
+```
+yarn dev
+```
+
 
