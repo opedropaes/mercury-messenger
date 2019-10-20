@@ -12,19 +12,19 @@ app.use('/', (req, res) => {
 });
 
 // Array de mensagens passadas provisório => será substituido pelas mensagens no drive
-let messages = [];
+let previousMessagesArray = [];
 
 // Eventos do socket quando este é iniciado
 io.on('connection', socketClient => {
     
     let id = socketClient.id;
-    socketClient.emit('previousMessages', messages); //Envia ao client as mensagens trocadas anteriormente
+    socketClient.emit('previousMessages', previousMessagesArray); //Envia ao client as mensagens trocadas anteriormente
 
     // Evento de envio e recepção de mensagens
     socketClient.on('sendMessage', data => {
         
         let { author, message } = data;
-        messages.push({ id, author, message });
+        previousMessagesArray.push({ id, author, message });
         socketClient.broadcast.emit('receivedMessage', data);
 
     })
