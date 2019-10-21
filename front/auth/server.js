@@ -15,7 +15,7 @@ app.use(express.json());
 const users = [];
 
 app.get("/users", (req, res) => {
-  res.json(users);
+  res.send(users);
 });
 
 app.post("/users", async (req, res) => {
@@ -29,6 +29,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
+//
 app.post("/users/login", async (req, res) => {
   const user = users.find(user => user.name === req.body.name);
   if (user == null) {
@@ -37,6 +38,7 @@ app.post("/users/login", async (req, res) => {
   try {
     if (await bcrypt.compare(req.body.password, user.password)) {
       res.send("Success");
+      res.send("yan");
     } else {
       res.send("Not Allowed");
     }
