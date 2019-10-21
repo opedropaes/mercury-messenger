@@ -1,24 +1,21 @@
 /** Apenas para teste => será substituido pelo front do Pedro */
+let socket = io('http://localhost:3000');
 
-let socket = io('http://localhost:3000', {transports: ['websocket'], rooms: "pedro"});
-
-$(document).ready(async () => {
-    let email = prompt("Seu email:");
-    let username = prompt("Seu username:");
-    
-    $('input[name=username]').val(username);
-    
-    sessionStorage.setItem('email', email);
-});
+let user1 = prompt('user');
+$('input[name=username]').val(user1);
 
 socket.on('connect', () => {
-    socket.nsp = sessionStorage.getItem('email');
-    let newNamespace = socket.nsp;
-    console.log(`newNamespace: ${newNamespace}, connected: ${socket.connected}, id: ${socket.id}`);
+	console.info(`conectado: ${socket.id}`);
+	//TODO: rota de atualizar no banco o visto por ultimo e o online pra true
+});
 
-    socket.emit('changeIdentification', {nsp: newNamespace, id: socket.id});
-})
+// Quandp clicar em alguem
 
+let user2 = "user2"; //username do cara que ele clicou
+let room = user1 + "-" + user2;
+let roomConnectionData = { sender: user1, receiver: user2, room };
+
+socket.emit('userConnectedToRoom', roomConnectionData);
 
 // Handler para submissão de mensagens
 $('#chat').submit(event => {
@@ -31,7 +28,7 @@ $('#chat').submit(event => {
     let messageExists = message.length;
 
     if (authorExists && messageExists) {
-        let messageObject = { author, message };
+        let messageObject = { author, message, room };
         renderMessage(messageObject);
         clearMessageInput();
         socket.emit('sendMessage', messageObject);
