@@ -38,38 +38,14 @@ io.on('connection', socketClient => {
 
 	socketClient.on('sendMessage', data => {
 		let { author, message, room } = data;
-		previousMessagesArray.push({ author, message }); // vai sumir depois pra virar persistencia no drive
+		previousMessagesArray.push({ author, message, room }); // vai sumir depois pra virar persistencia no drive
 		socketClient.to(room).broadcast.emit('receivedMessage', data);
 	});
+
+	socketClient.emit('previousMessages', previousMessagesArray);
 
 	socketClient.on('disconnect', () => {
 		console.info(`Client disconnected: ${socketClient.id}`);
 	});
 
 });
-
-// const nsp = io.of('/teste');
-
-// nsp.on('connection', socketClient => {
-
-// 	let id = socketClient.id;
-
-// 	socketClient.emit('previousMessages', previousMessagesArray); //Envia ao client as mensagens trocadas anteriormente
-
-//     // Evento de envio e recepção de mensagens
-    // socketClient.on('sendMessage', data => {
-    //     let { author, message } = data;
-    //     previousMessagesArray.push({ id, author, message });
-    //     socketClient.broadcast.emit('receivedMessage', data);
-    // });
-
-//     socketClient.on('disconnect', () => {
-//         sequenceNumberByClient.delete(socketClient);
-//         console.info(`Client disconnected: ${id}`);
-//     });
-
-//     socketClient.on('changeIdentification', newIdentification => {
-//         console.info("newIdentification");
-//     })
-
-// })

@@ -3,6 +3,8 @@ let socket = io('http://localhost:3000');
 
 let user1 = prompt('user');
 let user2 = prompt('user2');
+let room = "";
+
 $('input[name=username]').val(user1);
 
 socket.on('connect', () => {
@@ -35,8 +37,12 @@ const getRoomName = async (user1, user2) => {
         biggerUsername = ASCIICodesUser2.length;
 
     for (let i = 0; i < biggerUsername; i++) {
-        let ASCIICodeFromUser1 = (typeof parseInt(ASCIICodesUser1[i]) === "number") ? parseInt(ASCIICodesUser1[i]) : 0;
-        let ASCIICodeFromUser2 = (typeof parseInt(ASCIICodesUser2[i]) === "number") ? parseInt(ASCIICodesUser2[i]) : 0;
+
+		let ASCIICodeFromUser1 = parseInt(ASCIICodesUser1[i]);
+		let ASCIICodeFromUser2 = parseInt(ASCIICodesUser2[i]);
+		
+		ASCIICodeFromUser1 = (!isNaN(ASCIICodeFromUser1)) ? ASCIICodeFromUser1 : 0;
+		ASCIICodeFromUser2 = (!isNaN(ASCIICodeFromUser2)) ? ASCIICodeFromUser2 : 0;
         
         roomASCIICodes[i] =  + ASCIICodeFromUser1 + ASCIICodeFromUser2;
         roomName += JSON.stringify(roomASCIICodes[i]);
@@ -45,17 +51,13 @@ const getRoomName = async (user1, user2) => {
     return roomName;
 }
 
-
 // let user2 = "user2"; //username do cara que ele clicou
 getRoomName(user1, user2)
     .then(response => {
-        console.log(response)
-        let room = response;
+        room = response;
         let roomConnectionData = { sender: user1, receiver: user2, room };
         socket.emit('userConnectedToRoom', roomConnectionData);
     });
-
-
 
 // Handler para submissão de mensagens
 $('#chat').submit(event => {
@@ -88,19 +90,18 @@ let clearMessageInput = () => {
     $('input[name=message]').val("");
 }
 
-/** Eventos do socket para recebimento de mensagens */
-
 socket.on('receivedMessage', messageObject => { 
     renderMessage(messageObject);
 });
 
 // Provisório => será substituido por algum método de recuperação de mensagens vindas do drive
-socket.on('previousMessages', previousMessagesArray => { 
-    for (message of previousMessagesArray) {
-        renderMessage(message);
-    }
-});
+socket.on('previousMessages', previousMessagesObject => { 
+	
+	for (item of previousMessagesObject) {
+        if (room === item.room) {
+			let messageObject = { author: item.author, message: item.message }
+			renderMessage(messageObject);
+		}
+	}
 
-socket.on('receiveSequenceNumber', sequence => {
-    console.info(sequence);
-})
+});
