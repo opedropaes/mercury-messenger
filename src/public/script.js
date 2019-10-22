@@ -2,6 +2,7 @@
 let socket = io('http://localhost:3000');
 
 let user1 = prompt('user');
+let user2 = prompt('user2');
 $('input[name=username]').val(user1);
 
 socket.on('connect', () => {
@@ -11,11 +12,50 @@ socket.on('connect', () => {
 
 // Quandp clicar em alguem
 
-let user2 = "user2"; //username do cara que ele clicou
-let room = user1 + "-" + user2;
-let roomConnectionData = { sender: user1, receiver: user2, room };
+const getRoomName = async (user1, user2) => {
+    
+    let ASCIICodesUser1 = [];
+    let ASCIICodesUser2 = [];
+    let roomASCIICodes = [];
+    let roomName = "";
 
-socket.emit('userConnectedToRoom', roomConnectionData);
+    for (let char of user1) {
+        ASCIICodesUser1.push(char.charCodeAt(0));
+    }
+
+    for (let char of user2) {
+        ASCIICodesUser2.push(char.charCodeAt(0));
+    }
+
+    let biggerUsername = 0
+    
+    if (ASCIICodesUser1.length > ASCIICodesUser2.length) 
+        biggerUsername = ASCIICodesUser1.length;
+    else
+        biggerUsername = ASCIICodesUser2.length;
+
+    for (let i = 0; i < biggerUsername; i++) {
+        let ASCIICodeFromUser1 = (typeof parseInt(ASCIICodesUser1[i]) === "number") ? parseInt(ASCIICodesUser1[i]) : 0;
+        let ASCIICodeFromUser2 = (typeof parseInt(ASCIICodesUser2[i]) === "number") ? parseInt(ASCIICodesUser2[i]) : 0;
+        
+        roomASCIICodes[i] =  + ASCIICodeFromUser1 + ASCIICodeFromUser2;
+        roomName += JSON.stringify(roomASCIICodes[i]);
+    }
+
+    return roomName;
+}
+
+
+// let user2 = "user2"; //username do cara que ele clicou
+getRoomName(user1, user2)
+    .then(response => {
+        console.log(response)
+        let room = response;
+        let roomConnectionData = { sender: user1, receiver: user2, room };
+        socket.emit('userConnectedToRoom', roomConnectionData);
+    });
+
+
 
 // Handler para submissão de mensagens
 $('#chat').submit(event => {
