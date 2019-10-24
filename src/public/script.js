@@ -1,11 +1,11 @@
 /** Apenas para teste => será substituido pelo front do Pedro */
-let socket = io('http://localhost:3000');
+let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
-let user1 = prompt('user');
-let user2 = prompt('user2');
+let user1 = prompt('user'); // recebe nome do primeiro usuário (para teste de sala)
+let user2 = prompt('user2'); // recebe nome do segundo usuário (para teste de sala)
 let room = "";
 
-$('input[name=username]').val(user1);
+$('input[name=username]').val(`${user1} conversa com ${user2}`);
 
 socket.on('connect', () => {
 	console.info(`conectado: ${socket.id}`);

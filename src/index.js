@@ -3,16 +3,17 @@ const server = require('./config/server').server;
 const io = require("./config/server").io;
 const port = process.env.PORT || 3000;
 const expressStatusMonitor = require('express-status-monitor');
+const bodyParser = require('body-parser');
+const router = require('./routes/router');
 
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);
 });
 
-app.use('/', (req, res) => {
-	res.render('index.html');
-});
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressStatusMonitor({ websocket: io, port: app.get('port') }));
+app.use(router);
 
 // Array de mensagens passadas provisório => será substituido pelas mensagens no drive
 let previousMessagesArray = [];
@@ -46,6 +47,7 @@ io.on('connection', socketClient => {
 
 	socketClient.on('disconnect', () => {
 		console.info(`Client disconnected: ${socketClient.id}`);
+		// TODO: chamar lastSeenController e mudar pro instante corrente
 	});
 
 });

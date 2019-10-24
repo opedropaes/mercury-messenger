@@ -1,0 +1,1 @@
+// TODO: muda o lastSeen do usuario para agora
