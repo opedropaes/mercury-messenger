@@ -19,16 +19,15 @@ app.use(router);
 let previousMessagesArray = [];
 let rooms = {};
 
-let connectedGlobalRoomSockets = [];
+let globalRoomSockets = [];
 
 const broadCastGlobal = message => {
-  connectedGlobalRoomSockets
+  globalRoomSockets
     .map(el => el.socket)
     .forEach(socket => writeGlobalMessage(socket, message));
 };
 
 const writeGlobalMessage = (socket, message) => {
-  console.log("emiting global");
   socket.emit("globalMessage", JSON.stringify(message));
 };
 
@@ -48,10 +47,15 @@ io.on("connection", socketClient => {
 
   socketClient.on("connectToGlobal", params => {
     let { sender } = params;
-    let socket = { user: sender, socket: socketClient };
-    if (!connectedGlobalRoomSockets.includes(socket)) {
+    let userSocket = { user: sender, socket: socketClient };
+
+    usersConnecteds = globalRoomSockets.map(el => el.user);
+
+    console.log("usersConnecteds", usersConnecteds);
+
+    if (!usersConnecteds.includes(userSocket.user)) {
       console.log(`${sender} joined global room`, params);
-      connectedGlobalRoomSockets.push(socket);
+      globalRoomSockets.push(userSocket);
     }
   });
 
