@@ -59,6 +59,16 @@
 	color: #ffffff;
 }
 
+.mm-btn-yellow-shadowless {
+	background-color: #f19a0f;
+	color: #ffffff;
+}
+
+.mm-btn-yellow-shadowless:hover {
+	background-color: #e08a00;
+	color: #ffffff;
+}
+
 .mm-footer {
 	position: fixed;
     top: 94%;
@@ -71,4 +81,64 @@
 
 .application {
     overflow: auto;
+}
+
+.mm-bg-dark {
+    background-color: #0e1621;
+}
+
+.mm-card-dark {
+    background-color: #182533;
+    color: white;
+    /* position: fixed;
+    height: 100%;
+    left: 50%; */
+}
+
+.mm-card-dark input{
+    background-color: #131e29;
+    color: white;
+    border: #0b0f1d
+}
+
+.mm-card-dark input:focus{
+    background-color: #131e29;
+}
+
+.mm-card-login {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 50%;
+
+}
+
+.mm-card-login form {
+    position: relative;
+    top: 30%;
+    height: 100%;
+    width: 80%;
+    /* left: 40%; */
+}
+
+.mm-card-register form {
+    position: relative;
+    top: 20%;
+    height: 100%;
+    width: 80%;
+    /* left: 40%; */
+}
+
+.mm-card-register {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 50%;
+
+}
+
+.mm-login-icon {
+    position: fixed;
+    top: 40%;
+    right: 65%;
 }
