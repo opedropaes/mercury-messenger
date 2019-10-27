@@ -24,9 +24,15 @@ const CommunicatorSchema = new mongoose.Schema({
 		required: true,
 		select: false
 	},
+	registerMethod: {
+		type: String,
+		required: true,
+		default: "Mercury"
+	},
 	createdAt: {
 		type: Date,
-		default: Date.now
+		default: Date.now,
+		select: false
 	},
 	lastSeenAt: {
 		type: Date,

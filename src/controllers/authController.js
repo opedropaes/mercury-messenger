@@ -1,6 +1,8 @@
 const Communicator = require('../models/Communicator');
 const definePassword = require('../utils/googlePasswordDefiner');
 const bcrypt = require('bcryptjs');
+const md5 = require('md5');
+const jwt = require('jsonwebtoken');
 
 authServices = {}
 
@@ -12,7 +14,7 @@ authServices.register = async (req, res) => {
 		if (method === "google") {
 			password = await definePassword(email);
 		}
-		communicator = await Communicator.create({ name, email, username, password });
+		communicator = await Communicator.create({ name, email, username, password, registerMethod: method });
 		return res.send(communicator);
 	}
 	catch (err) {
@@ -24,33 +26,64 @@ authServices.register = async (req, res) => {
 
 authServices.login = async (req, res) => {
 	try {
-		let { username, password } = req.body;
+		let { username, password, method } = req.body;
 
-		if (password && username) {
-			let communicator = await Communicator.findOne({ username }).select('+password');
+		// Login pela tela padrão da aplicação
 
-			if (communicator) {
-				if (await bcrypt.compare(password, communicator.password)) {
-					return res.send(communicator);
-				} else {
-					return res.status(400).send({ error: "Falha ao logar - Senha incorreta!" });
+		if (method !== "google") {
+			if (password && username) {
+				let communicator = await Communicator.findOne({ username }).select('+password');
+	
+				if (communicator) {
+					if (await bcrypt.compare(password, communicator.password)) {
+						let secret = md5(communicator.id + communicator.createdAt + JSON.stringify(Date.now()));
+						let token = jwt.sign({ id: communicator.id }, secret, {
+							expiresIn: 86400,
+						});
+	
+						// return res.status(200).send({ communicator, token });
+						return ({ communicator, token });
+	
+					// } else return res.status(400).send({ error: "Falha ao logar - Senha incorreta!" });
+					} else return ({ error: "Falha ao logar - Senha incorreta!" });
+				// } else return res.status(400).send({ error: "Falha ao logar - Usuário não encontrado!" });
+				} else return ({ error: "Falha ao logar - Usuário não encontrado!" });
+			// } else return res.status(400).send({ error: "Falha ao logar - Usuario e senha devem estar presentes!" });	
+			} else return ({ error: "Falha ao logar - Usuario e senha devem estar presentes!" });	
+		
+		// Login pelo google
+
+		} else if (method === "google") {
+			if (username) {
+				let communicator = await Communicator.findOne({ username });
+
+				if (communicator.registerMethod === "Mercury") {
+					// return res.status(400).send({ err: "Falha ao logar - Você não está cadastrado usando uma conta Google." });
+					return ({ err: "Falha ao logar - Você não está cadastrado usando uma conta Google." });
 				}
-			} else {
-				return res.status(400).send({ error: "Falha ao logar - Usuário não encontrado!" });
+			
+				if (communicator) {
+					let secret = md5(communicator.id + communicator.createdAt + JSON.stringify(Date.now()));
+					let token = jwt.sign({ id: communicator.id }, secret, {
+						expiresIn: 86400,
+					});
+	
+					// return res.status(200).send({ communicator, token });
+					return ({ communicator, token });
+
+				// } else return res.status(400).send({ error: "Falha ao logar - Usuário não encontrado!" });
+				} else return ({ error: "Falha ao logar - Usuário não encontrado!" });
 			}
-
-		} else {
-			return res.status(400).send({ error: "Falha ao logar - Usuario e senha devem estar presentes!" });
 		}
-
-		// TODO: Autenticar usuario
-
 	}
 	catch (err) {
 		console.info(`${err}: Falha ao logar`);
-		return res.status(400).send({ error: "Falha ao logar" });
+		// return res.status(400).send({ error: "Falha ao logar" });
+		return ({ error: "Falha ao logar" });
 	}
 }
+
+// Metodos usados para teste, não entrarão como artefato de  baseline
 
 authServices.delete = async (req, res) => {
 	try {
@@ -65,7 +98,8 @@ authServices.delete = async (req, res) => {
 authServices.list = async (req, res) => {
 	try {
 		let users = await Communicator.find();
-		return res.send(users);
+		// return res.send(users);
+		return users;
 	} catch (error) {
 		return res.status(400).send({ error: `${error}` });
 	}

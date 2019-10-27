@@ -1,8 +1,8 @@
 /** Apenas para teste => será substituido pelo front do Pedro */
 let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
-let user1 = prompt('user'); // recebe nome do primeiro usuário (para teste de sala)
-let user2 = prompt('user2'); // recebe nome do segundo usuário (para teste de sala)
+let user1 = sessionStorage.getItem('mm-username');
+let user2 = prompt("enviar mensagem para contato:"); // Deve ser mudado
 let room = "";
 
 $('input[name=username]').val(`${user1} conversa com ${user2}`);
@@ -63,7 +63,7 @@ getRoomName(user1, user2)
 $('#chat').submit(event => {
     event.preventDefault();
 
-    let author = $('input[name=username]').val();
+    let author = $('input[name=username]').val().split(" ")[0];
     let message = $('input[name=message]').val();
 
     let authorExists = author.length;

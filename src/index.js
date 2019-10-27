@@ -5,11 +5,13 @@ const port = process.env.PORT || 3000;
 const expressStatusMonitor = require('express-status-monitor');
 const bodyParser = require('body-parser');
 const router = require('./routes/router');
+const cors = require('cors');
 
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);
 });
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressStatusMonitor({ websocket: io, port: app.get('port') }));
