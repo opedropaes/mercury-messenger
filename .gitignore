@@ -93,3 +93,11 @@ typings/
 .dynamodb/
 
 # End of https://www.gitignore.io/api/node
+
+.wt
+mongod.lock
+WiredTiger
+WiredTiger.lock
+.turtle
+
+frontend/
