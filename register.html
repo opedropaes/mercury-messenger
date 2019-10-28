@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Entrar</title>
+    <title>Registrar</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles/style.css">
@@ -16,14 +16,18 @@
     <div class="container p-0">
         <div class="contairner-fluid row flex-row m-0">
             <div class="col-lg-3 mm-login-icon m-0">
-                <a href="./home.html">
+                <a href="./index.html">
                     <img src="./dist/imgs/png/mercury-logo-transparent.png" alt="" height="100">
-                </a>           
+                </a>
             </div>
-            <div class="col-lg-6 mm-card-dark mm-card-login">
-                <form class="mx-auto text-center" action="" method="POST">
-                    <h4 class="h4 mb-3">Entrar</h4>
-                    <input type="user" name="user" id="user" class="form-control" placeholder="usuario">
+            <div class="col-lg-6 mm-card-dark mm-card-register">
+                <form class="mx-auto text-center" action="http://localhost:3000/registrar" method="POST">
+                    <h4 class="h4 mb-3">Registrar</h4>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="nome">
+                    <br>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="e-mail">
+                    <br>
+                    <input type="user" name="username" id="username" class="form-control" placeholder="usuario" >
                     <br>
                     <input type="password" name="password" id="password" class="form-control"
                         placeholder="senha" pattern="^{6,}$">
@@ -31,9 +35,9 @@
                     <button class="btn mm-btn-yellow-shadowless btn-block mb-3" id="submit">
                         <strong>Comece a conversar</strong>
                     </button>
-                    <a href="./register.html">
+                    <a href="./login.html">
                         <small class="text-white">
-                            Não tem uma conta? Cadastre-se aqui
+                            Já tem uma conta? Entre aqui
                         </small>
                     </a>
                 </form>

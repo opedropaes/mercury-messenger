@@ -1,7 +1,8 @@
 /** Apenas para teste => será substituido pelo front do Pedro */
 let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
-let user1 = sessionStorage.getItem('mm-username');
+let user1 = window.location.href;
+user1 = user1.split('=')[1];
 let user2 = prompt("enviar mensagem para contato:"); // Deve ser mudado
 let room = "";
 
@@ -51,7 +52,6 @@ const getRoomName = async (user1, user2) => {
     return roomName;
 }
 
-// let user2 = "user2"; //username do cara que ele clicou
 getRoomName(user1, user2)
     .then(response => {
         room = response;
