@@ -5,9 +5,9 @@ Aplicação web que simula um mensageiro pessoal através do protocolo WebSocket
 ## Desenvolvedores
 
 * [Pedro Mihael V. Paes](https://github.com/opedropaes/) - Backend
-* [Yan Sérgio Y. Ajiki](https://github.com/hi-im-yan/) - Backend
+* [Yan Sérgio Y. Ajiki](https://github.com/hi-im-yan/) - Serviços Externos
 * [Pedro Stürmer](https://github.com/pedrost/) - Frontend
-* Rafael Guardiano - Frontend
+* [Rafael Guardiano](https://github.com/RafaelGuardiano95/) - Modelos e Frontend
 
 ## Requisitos
 * [NPM instalado](https://www.npmjs.com/)
