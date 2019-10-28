@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true };
 
-mongoose.connect('mongodb://localhost/mm-communicators', options);
+mongoose.connect('mongodb://localhost/mm-communicator-2', options);
 mongoose.Promise = global.Promise;
 
 module.exports.mongoose = mongoose;

@@ -15,7 +15,8 @@ authServices.register = async (req, res) => {
 			password = await definePassword(email);
 		}
 		communicator = await Communicator.create({ name, email, username, password, registerMethod: method });
-		return res.send(communicator);
+		// return res.send(communicator);
+		return ({ communicator });
 	}
 	catch (err) {
 		console.info(`${err}: Falha ao registrar`);
@@ -98,8 +99,8 @@ authServices.delete = async (req, res) => {
 authServices.list = async (req, res) => {
 	try {
 		let users = await Communicator.find();
-		// return res.send(users);
-		return users;
+		return res.send(users);
+		// return users;
 	} catch (error) {
 		return res.status(400).send({ error: `${error}` });
 	}

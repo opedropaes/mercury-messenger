@@ -6,7 +6,22 @@ router.get('/', (req, res) => {
 	res.render('index.html');
 });
 
-router.post('/registrar', authController.register);
+router.post('/registrar', async (req, res) => {
+	let isRegistered = false
+	authController.register(req, res)
+		.then(response => {
+			isRegistered = response.communicator.id;
+			if (isRegistered) {
+				// res.render('contatos.html');
+				res.redirect('http://localhost:5500/chat.html?username=' + response.communicator.username);
+			} else {
+				res.redirect('http://localhost:5500/register.html');
+			}
+		})
+		.catch(err => {
+			console.log(err);
+		});
+});
 
 router.post('/entrar', async (req, res) => {
 	let isLoginValid = false 
@@ -15,9 +30,9 @@ router.post('/entrar', async (req, res) => {
 			isLoginValid = response.communicator.id;
 			if (isLoginValid) {
 				// res.render('contatos.html');
-				res.redirect('chat.html');
+				res.redirect('http://localhost:5500/chat.html?username=' + response.communicator.username);
 			} else {
-				res.redirect('index.html');
+				res.redirect('http://localhost:5500/login.html');
 			}
 		})
 		.catch(err => {
