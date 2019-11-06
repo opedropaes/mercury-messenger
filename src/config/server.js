@@ -11,15 +11,15 @@ const io = socket(server);
 app.set('x-powered-by', false); 
 
 //Configura o servidor para servir os documentos estáticos contidos em {@dir} public
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 //Configura os arquivos de visualização como os contidos em {@dir} public
-app.set('views', 'public');
+// app.set('views', 'public');
 
 //Configura a engine de visualização como o padrão ejs para html
-app.engine("html", require("ejs").renderFile);
+// app.engine("html", require("ejs").renderFile);
 
 //Configura a engine de visualização para renderizar arquivos com extensão html
-app.set('view engine', 'html');
+// app.set('view engine', 'html');
 
 module.exports = { app, server, io };

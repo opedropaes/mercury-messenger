@@ -15,7 +15,6 @@ authServices.register = async (req, res) => {
 			password = await definePassword(email);
 		}
 		communicator = await Communicator.create({ name, email, username, password, registerMethod: method });
-		// return res.send(communicator);
 		return ({ communicator });
 	}
 	catch (err) {
@@ -42,15 +41,10 @@ authServices.login = async (req, res) => {
 							expiresIn: 86400,
 						});
 	
-						// return res.status(200).send({ communicator, token });
 						return ({ communicator, token });
-	
-					// } else return res.status(400).send({ error: "Falha ao logar - Senha incorreta!" });
-					} else return ({ error: "Falha ao logar - Senha incorreta!" });
-				// } else return res.status(400).send({ error: "Falha ao logar - Usuário não encontrado!" });
-				} else return ({ error: "Falha ao logar - Usuário não encontrado!" });
-			// } else return res.status(400).send({ error: "Falha ao logar - Usuario e senha devem estar presentes!" });	
-			} else return ({ error: "Falha ao logar - Usuario e senha devem estar presentes!" });	
+					} else return ({ error: "PasswordFailed" });
+				} else return ({ error: "UserNotFound" });
+			} else return ({ error: "EmptyField" });	
 		
 		// Login pelo google
 
@@ -79,7 +73,6 @@ authServices.login = async (req, res) => {
 	}
 	catch (err) {
 		console.info(`${err}: Falha ao logar`);
-		// return res.status(400).send({ error: "Falha ao logar" });
 		return ({ error: "Falha ao logar" });
 	}
 }
