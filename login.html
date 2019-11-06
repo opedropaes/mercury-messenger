@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Entrar</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 
@@ -21,14 +22,14 @@
                 </a>           
             </div>
             <div class="col-lg-6 mm-card-dark mm-card-login">
-                <form class="mx-auto text-center" action="http://localhost:3000/entrar" method="POST">
+                <form class="mx-auto text-center" id="login-form" method="POST">
                     <h4 class="h4 mb-3">Entrar</h4>
                     <input type="username" name="username" id="username" class="form-control" placeholder="usuario">
                     <br>
                     <input type="password" name="password" id="password" class="form-control"
-                        placeholder="senha" pattern="^{6,}$">
+                        placeholder="senha">
                     <br>
-                    <button class="btn mm-btn-yellow-shadowless btn-block mb-3" id="submit">
+                    <button class="btn mm-btn-yellow-shadowless btn-block mb-3" id="submit" type="submit">
                         <strong>Comece a conversar</strong>
                     </button>
                     <a href="./register.html">
@@ -39,8 +40,9 @@
                 </form>
             </div>
         </div>
-    </div>
-
+	</div>
+	
+	<script src="./scripts/handle-login.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

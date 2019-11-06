@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div class="col-lg-6 mm-card-dark mm-card-register">
-                <form class="mx-auto text-center" action="http://localhost:3000/registrar" method="POST">
+                <form class="mx-auto text-center" id="signup-form" action="http://localhost:3000/registrar"  method="POST">
                     <h4 class="h4 mb-3">Registrar</h4>
                     <input type="text" name="name" id="name" class="form-control" placeholder="nome">
                     <br>
@@ -32,7 +32,7 @@
                     <input type="password" name="password" id="password" class="form-control"
                         placeholder="senha" pattern="^{6,}$">
                     <br>
-                    <button class="btn mm-btn-yellow-shadowless btn-block mb-3" id="submit">
+                    <button class="btn mm-btn-yellow-shadowless btn-block mb-3" id="submit" type="submit">
                         <strong>Comece a conversar</strong>
                     </button>
                     <a href="./login.html">
