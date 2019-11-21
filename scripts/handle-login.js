@@ -6,7 +6,7 @@ if (form.attachEvent) {
 	form.addEventListener("submit", handleLogin);
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
 	e.preventDefault();
 
 	const body = {
@@ -25,21 +25,28 @@ function handleLogin(e) {
 
 	try {
 		fetch('http://localhost:3000/entrar', payload)
-			.then(response => {
-				if (response.status == '200') {
-					window.location.href = `http://localhost:5500/chat.html?username=${body.username}`;
-				} else if (response.err == "UserNotFound") {
-					alert("Parece que você não tem uma conta ainda! Registre-se e comece a conversar!");
-				} else if (response.err == "PasswordFailed") {
-					alert("Senha incorreta! Tente novamente.");
-				} else if (response.err == "EmptyField") {
-					alert("Todos os campos devem estar preenchidos!");
-				}
-				else {
-					alert("Verifique os campos e tente novamente!");
-				}
+			.then((response) => {
+				
+				response.json().then(a => {
+					if (response.status == '200') {
+						const { username, token } = a;
+						console.log(username, token, response.status)
+					}
+				})
 
-				console.log(response)
+				// if (response.status == '200') {
+				// 	window.location.href = `http://localhost:5500/chat.html?username=${body.username}`;
+				// 	console.log(response)
+				// } else if (response.err == "UserNotFound") {
+				// 	alert("Parece que você não tem uma conta ainda! Registre-se e comece a conversar!");
+				// } else if (response.err == "PasswordFailed") {
+				// 	alert("Senha incorreta! Tente novamente.");
+				// } else if (response.err == "EmptyField") {
+				// 	alert("Todos os campos devem estar preenchidos!");
+				// }
+				// else {
+				// 	alert("Verifique os campos e tente novamente!");
+				// }
 
 				return false;
 			})
