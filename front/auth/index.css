@@ -1,0 +1,142 @@
+.full-size {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.mm-yellow {
+  background-color: #f19a0f;
+}
+
+.mm-darkblue {
+  background-color: #0b0f1d;
+}
+
+.mm-font-yellow {
+  color: #f19a0f;
+}
+
+.btn-mm-white {
+  color: #f19a0f;
+  background-color: white;
+}
+
+.btn-mm-white:hover {
+  color: #f19a0f;
+  background-color: rgb(224, 224, 224);
+}
+
+.mm-home-notebook-icon {
+  position: relative;
+  top: 10%;
+  left: 10%;
+  /* transform: translate(50, 50); */
+}
+
+.mm-btn-google {
+  background-color: rgb(250, 250, 250);
+  box-shadow: #7f7f7f;
+  box-shadow: 0px 2px 3px 0px grey;
+  color: #7f7f7f;
+}
+
+.mm-btn-google:hover {
+  background-color: rgb(230, 230, 230);
+  box-shadow: #7f7f7f;
+  box-shadow: 0px 2px 3px 0px grey;
+  color: #7f7f7f;
+}
+
+.mm-btn-yellow {
+  background-color: #f19a0f;
+  box-shadow: 0px 2px 3px 0px grey;
+  color: #ffffff;
+}
+
+.mm-btn-yellow:hover {
+  background-color: #e08a00;
+  box-shadow: 0px 2px 3px 0px grey;
+  color: #ffffff;
+}
+
+.mm-btn-yellow-shadowless {
+  background-color: #f19a0f;
+  color: #ffffff;
+}
+
+.mm-btn-yellow-shadowless:hover {
+  background-color: #e08a00;
+  color: #ffffff;
+}
+
+.mm-footer {
+  position: fixed;
+  top: 94%;
+  width: 100%;
+  background-color: #192735;
+  color: white;
+  /* height: 100%; */
+  text-align: center;
+}
+
+.application {
+  overflow: auto;
+}
+
+.mm-bg-dark {
+  background-color: #0e1621;
+}
+
+.mm-card-dark {
+  background-color: #182533;
+  color: white;
+  /* position: fixed;
+    height: 100%;
+    left: 50%; */
+}
+
+.mm-card-dark input {
+  background-color: #131e29;
+  color: white;
+  border: #0b0f1d;
+}
+
+.mm-card-dark input:focus {
+  background-color: #131e29;
+}
+
+.mm-card-login {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 50%;
+}
+
+.mm-card-login form {
+  position: relative;
+  top: 30%;
+  height: 100%;
+  width: 80%;
+  /* left: 40%; */
+}
+
+.mm-card-register form {
+  position: relative;
+  top: 20%;
+  height: 100%;
+  width: 80%;
+  /* left: 40%; */
+}
+
+.mm-card-register {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 50%;
+}
+
+.mm-login-icon {
+  position: fixed;
+  top: 40%;
+  right: 65%;
+}
