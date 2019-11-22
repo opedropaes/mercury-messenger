@@ -10,12 +10,15 @@ router.post('/registrar', async (req, res) => {
 	let isRegistered = false
 	authController.register(req, res)
 		.then(response => {
-			isRegistered = response.communicator.id;
+			const { communicator, token } = response;
+			isRegistered = communicator.id;
+
 			if (isRegistered) {
-				res.redirect('http://localhost:5500/chat.html?username=' + response.communicator.username); //trocar com handleRegiter
+				res.status(200).json({ communicator, token });
 			} else {
-				res.redirect('http://localhost:5500/register.html');
+				res.status(400).send(communicator);
 			}
+
 		})
 		.catch(err => {
 			console.log(err);
@@ -29,7 +32,11 @@ router.post('/entrar', async (req, res) => {
 			try {
 				isLoginValid = response.communicator;
 				if (isLoginValid) {
-					res.status(200).json({username: response.communicator.username, token: response.token});
+
+					const { communicator, token } = response;
+					const { username } = communicator;
+					res.status(200).json({ username, token });
+				
 				} else {
 					res.status(400).send(response);
 				}

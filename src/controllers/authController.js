@@ -1,8 +1,7 @@
 const Communicator = require('../models/Communicator');
 const definePassword = require('../utils/googlePasswordDefiner');
 const bcrypt = require('bcryptjs');
-const md5 = require('md5');
-const jwt = require('jsonwebtoken');
+const AcessToken = require('../models/AccessToken');
 
 authServices = {}
 
@@ -14,12 +13,15 @@ authServices.register = async (req, res) => {
 		if (method === "google") {
 			password = await definePassword(email);
 		}
+				
 		communicator = await Communicator.create({ name, email, username, password, registerMethod: method });
-		return ({ communicator });
+		const token = await AcessToken.getToken(communicator.id, communicator.createdAt);
+		
+		return ({ communicator, token });
 	}
 	catch (err) {
 		console.info(`${err}: Falha ao registrar`);
-		return res.status(400).send({ error: "Falha ao registrar" });
+		return res.status(400).send({ error: "RegistrationFailed" });
 	};
 
 }
@@ -36,12 +38,10 @@ authServices.login = async (req, res) => {
 	
 				if (communicator) {
 					if (await bcrypt.compare(password, communicator.password)) {
-						let secret = md5(communicator.id + communicator.createdAt + JSON.stringify(Date.now()));
-						let token = jwt.sign({ id: communicator.id }, secret, {
-							expiresIn: 86400,
-						});
-	
+						
+						const token = await AcessToken.getToken(communicator.id, communicator.createdAt);
 						return ({ communicator, token });
+					
 					} else return ({ error: "PasswordFailed" });
 				} else return ({ error: "UserNotFound" });
 			} else return ({ error: "EmptyField" });	
@@ -53,20 +53,13 @@ authServices.login = async (req, res) => {
 				let communicator = await Communicator.findOne({ username });
 
 				if (communicator.registerMethod === "Mercury") {
-					// return res.status(400).send({ err: "Falha ao logar - Você não está cadastrado usando uma conta Google." });
 					return ({ err: "Falha ao logar - Você não está cadastrado usando uma conta Google." });
 				}
 			
 				if (communicator) {
-					let secret = md5(communicator.id + communicator.createdAt + JSON.stringify(Date.now()));
-					let token = jwt.sign({ id: communicator.id }, secret, {
-						expiresIn: 86400,
-					});
-	
-					// return res.status(200).send({ communicator, token });
+					const token = await AcessToken.getToken(communicator.id, communicator.createdAt);
 					return ({ communicator, token });
 
-				// } else return res.status(400).send({ error: "Falha ao logar - Usuário não encontrado!" });
 				} else return ({ error: "Falha ao logar - Usuário não encontrado!" });
 			}
 		}
