@@ -2,7 +2,7 @@
 let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
 let user1 = window.location.href;
-user1 = user1.split('=')[1];
+user1 = user1.split('=')[1].split('&')[0];
 let user2 = prompt("enviar mensagem para contato:"); // Deve ser mudado
 let room = "";
 

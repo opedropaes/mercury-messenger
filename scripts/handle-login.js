@@ -27,26 +27,21 @@ async function handleLogin(e) {
 		fetch('http://localhost:3000/entrar', payload)
 			.then((response) => {
 				
-				response.json().then(a => {
+				response.json().then(async res => {
 					if (response.status == '200') {
-						const { username, token } = a;
-						console.log(username, token, response.status)
+						const { username, token } = res;
+						redirect(username, token);
+					} else if (response.err == "UserNotFound") {
+						alert("Parece que você não tem uma conta ainda! Registre-se e comece a conversar!");
+					} else if (response.err == "PasswordFailed") {
+						alert("Senha incorreta! Tente novamente.");
+					} else if (response.err == "EmptyField") {
+						alert("Todos os campos devem estar preenchidos!");
+					}
+					else {
+						alert("Verifique os campos e tente novamente!");
 					}
 				})
-
-				// if (response.status == '200') {
-				// 	window.location.href = `http://localhost:5500/chat.html?username=${body.username}`;
-				// 	console.log(response)
-				// } else if (response.err == "UserNotFound") {
-				// 	alert("Parece que você não tem uma conta ainda! Registre-se e comece a conversar!");
-				// } else if (response.err == "PasswordFailed") {
-				// 	alert("Senha incorreta! Tente novamente.");
-				// } else if (response.err == "EmptyField") {
-				// 	alert("Todos os campos devem estar preenchidos!");
-				// }
-				// else {
-				// 	alert("Verifique os campos e tente novamente!");
-				// }
 
 				return false;
 			})
@@ -57,4 +52,8 @@ async function handleLogin(e) {
 		console.debug(err);
 	}
 
+}
+
+function redirect(username, token) {
+	window.location.href = `http://localhost:5500/chat.html?username=${username}&token=${token}`;
 }
