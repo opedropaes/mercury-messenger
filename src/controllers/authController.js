@@ -84,9 +84,9 @@ authServices.delete = async (req, res) => {
 
 authServices.list = async (req, res) => {
 	try {
-		let users = await Communicator.find();
-		return res.send(users);
-		// return users;
+		let communicators = await Communicator.find();
+		const usernames = communicators.map(communicator => communicator.username);
+		return res.send(usernames);
 	} catch (error) {
 		return res.status(400).send({ error: `${error}` });
 	}

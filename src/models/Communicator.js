@@ -38,6 +38,9 @@ const CommunicatorSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now
 	},
+	isOnline: {
+		type: Boolean,
+	},
 	contacts: {
 		type: Array,
 	}

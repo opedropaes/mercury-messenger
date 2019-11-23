@@ -7,6 +7,8 @@ const bodyParser = require('body-parser');
 const router = require('./routes/router');
 const cors = require('cors');
 
+const communicatorController = require('./controllers/communicatorController').communicatorServices;
+
 server.listen(port, () => {
 	console.log(`Server started on port ${port}`);
 });
@@ -47,9 +49,27 @@ io.on('connection', socketClient => {
 
 	socketClient.emit('previousMessages', previousMessagesArray);
 
+	socketClient.on('getOnline', communicatorOnline => {
+		communicatorController.updateStatus(communicatorOnline)
+			.then(updatedStatus => {
+				const { username, isOnline, ok } = updatedStatus;
+				console.log(`ok: ${ok} - ${username} status updated to ${isOnline}`);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	});
+
 	socketClient.on('disconnect', () => {
 		console.info(`Client disconnected: ${socketClient.id}`);
-		// TODO: chamar lastSeenController e mudar pro instante corrente
+	});
+
+	socketClient.on('getDisconnected', communicatorDisconnected => {
+		communicatorController.updateLastSeenAt(communicatorDisconnected)
+			.then(updatedLastSeenAt => {
+				const { username, updateLastSeenAt, ok } = updatedLastSeenAt;
+				console.log(`ok: ${ok} - ${username} last seen at ${updateLastSeenAt}`);
+			})
 	});
 
 });

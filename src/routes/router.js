@@ -5,7 +5,7 @@ const contactController = require('../controllers/contactsController').contactSe
 const communicatorController = require('../controllers/communicatorController').communicatorServices;
 
 router.get('/', (req, res) => {
-	res.render('index.html');
+	res.send('mercury-messenger');
 });
 
 router.post('/registrar', async (req, res) => {
@@ -55,7 +55,7 @@ router.post('/entrar', async (req, res) => {
 
 router.delete('/excluir', authController.delete);
 
-router.get('/listar', authServices.list);
+router.get('/pessoas', authServices.list);
 
 // Contatos
 
@@ -67,14 +67,5 @@ router.delete('/remover-contato', contactServices.removeContact);
 
 router.get('/:username/listar-contatos', communicatorServices.getContacts);
 
-
-// Não-definitivo
-router.get('/:username/contatos', (req, res) => {
-	authServices.list(req, res)
-		.then(response => {
-			let users = response.filter(user => user.username != req.params.username);
-			res.status(200).send({users});
-		})
-})
 
 module.exports = router;
