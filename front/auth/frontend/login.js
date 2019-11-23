@@ -1,11 +1,11 @@
-//Client ID: 589383680033-km9ntn36jvgtcskn9v413t8gb3s1bo6d.apps.googleusercontent.com
-//Client Secret: QCFn6pN7pMUOfH0eoeLI5e_l
+//Client ID: 366460579623-8rl80028rpr501mm0e0a89h024luskjp.apps.googleusercontent.com
+//Client Secret: mkezEb9dAXgZRHF-uxU45fxc
 
 $(document).ready(function() {
   // client id of the project
 
   var clientId =
-    "589383680033-km9ntn36jvgtcskn9v413t8gb3s1bo6d.apps.googleusercontent.com";
+    "366460579623-8rl80028rpr501mm0e0a89h024luskjp.apps.googleusercontent.com";
 
   // redirect_uri of the project
 
