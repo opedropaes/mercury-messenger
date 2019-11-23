@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController').authServices;
 const contactController = require('../controllers/contactsController').contactServices;
+const communicatorController = require('../controllers/communicatorController').communicatorServices;
 
 router.get('/', (req, res) => {
 	res.render('index.html');
@@ -61,6 +62,10 @@ router.get('/listar', authServices.list);
 router.post('/adicionar-contato', contactServices.addContact);
 
 router.delete('/remover-contato', contactServices.removeContact);
+
+// User
+
+router.get('/:username/listar-contatos', communicatorServices.getContacts);
 
 
 // Não-definitivo
