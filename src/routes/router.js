@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController').authServices;
+const contactController = require('../controllers/contactsController').contactServices;
 
 router.get('/', (req, res) => {
 	res.render('index.html');
@@ -54,6 +55,13 @@ router.post('/entrar', async (req, res) => {
 router.delete('/excluir', authController.delete);
 
 router.get('/listar', authServices.list);
+
+// Contatos
+
+router.post('/adicionar-contato', contactServices.addContact);
+
+router.delete('/remover-contato', contactServices.removeContact);
+
 
 // Não-definitivo
 router.get('/:username/contatos', (req, res) => {

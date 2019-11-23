@@ -37,6 +37,9 @@ const CommunicatorSchema = new mongoose.Schema({
 	lastSeenAt: {
 		type: Date,
 		default: Date.now
+	},
+	contacts: {
+		type: Array,
 	}
 });
 
