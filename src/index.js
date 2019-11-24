@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressStatusMonitor({ websocket: io, port: app.get('port') }));
 app.use(router);
 
-// Array de mensagens passadas provisório => será substituido pelas mensagens no drive
+// Array de mensagens passadas
 let previousMessagesArray = [];
 
 let rooms = {};
@@ -43,7 +43,7 @@ io.on('connection', socketClient => {
 
 	socketClient.on('sendMessage', data => {
 		let { author, message, room } = data;
-		previousMessagesArray.push({ author, message, room }); // vai sumir depois pra virar persistencia no drive
+		previousMessagesArray.push({ author, message, room }); 
 		socketClient.to(room).broadcast.emit('receivedMessage', data);
 	});
 

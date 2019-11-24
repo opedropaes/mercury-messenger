@@ -70,26 +70,4 @@ authServices.login = async (req, res) => {
 	}
 }
 
-// Metodos usados para teste, não entrarão como artefato de  baseline
-
-authServices.delete = async (req, res) => {
-	try {
-		let { username } = req.body;
-		let deleted = await Communicator.remove({ username });
-		return res.send(deleted);
-	} catch (error) {
-		return res.status(400).send({ error: `${error}` });
-	}
-}
-
-authServices.list = async (req, res) => {
-	try {
-		let communicators = await Communicator.find();
-		const usernames = communicators.map(communicator => communicator.username);
-		return res.send(usernames);
-	} catch (error) {
-		return res.status(400).send({ error: `${error}` });
-	}
-}
-
 module.exports = { authServices };
