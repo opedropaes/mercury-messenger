@@ -8,6 +8,8 @@ router.get('/', (req, res) => {
 	res.send('mercury-messenger');
 });
 
+// Autenticacao
+
 router.post('/registrar', async (req, res) => {
 	let isRegistered = false
 	authController.register(req, res)
@@ -52,7 +54,6 @@ router.post('/entrar', async (req, res) => {
 			console.log(err);
 		});
 });
-
 
 // Contatos
 

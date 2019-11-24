@@ -1,5 +1,4 @@
-// Cria conexão com o banco de dados (MongoDB precisa estar instalado na máquina)
-
+// Cria conexão com o banco de dados (MongoDB precisa estar instalado na máquina e precisa ser inicializado)
 const mongoose = require('mongoose');
 
 const options = { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true };
