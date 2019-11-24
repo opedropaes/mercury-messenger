@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="./styles/chat2.css">
+	<title>Mercury</title>
+</head>
+
+<body>
+	<div id="app">
+		<div class="sidebar">
+			<div class="card">
+				<header>
+					<img class="avatar" width="40" height="40" alt="user.name"
+						src="https://avatars1.githubusercontent.com/u/24485987?v=4" />
+					<p class="name">pedrost</p>
+				</header>
+				<footer>
+					<input class="search" type="text" placeholder="search..." @keyup="onKeyup | debounce 150" />
+				</footer>
+			</div>
+			<div class="list">
+				<ul>
+					<li v-for="item in sessions" :class="{ active: item.id === currentId }"
+						@click="selectSession(item.id)">
+						<img class="avatar" width="30" height="30" alt="item.user.name"
+							src="https://avatars1.githubusercontent.com/u/24485987?v=4" />
+						<p class="name">pedrost</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="main">
+			<div class="message" v-scroll-bottom="session.messages">
+				<ul v-if="session">
+					<li v-for="item in session.messages">
+						<p class="time">
+							<span>data</span>
+						</p>
+						<img class="avatar" width="30" height="30"
+							src="https://avatars1.githubusercontent.com/u/24485987?v=4" />
+						<div class="text">conteudo recebido</div>
+					</li>
+					<li _v-50b6d54c="">
+						<p class="time" _v-50b6d54c="">
+							<span _v-50b6d54c="">21:2</span>
+						</p>
+						<div class="main self" _v-50b6d54c="">
+							<img class="avatar" width="30" height="30" _v-50b6d54c=""
+								src="https://avatars1.githubusercontent.com/u/24485987?v=4" />
+							<div class="text" _v-50b6d54c="">conteudo enviado</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="text">
+				<textarea placeholder="Escreva sua mensagem" v-model="content" @keyup="onKeyup"></textarea>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
