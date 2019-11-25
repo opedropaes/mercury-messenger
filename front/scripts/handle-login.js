@@ -55,5 +55,5 @@ async function handleLogin(e) {
 }
 
 function redirect(username, token) {
-	window.location.href = `http://localhost:5500/chat.html?username=${username}&token=${token}`;
+	window.location.href = `chat2.html?username=${username}&token=${token}`;
 }

@@ -1,4 +1,3 @@
-/** Apenas para teste => será substituido pelo front do Pedro */
 let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
 $.urlParam = function(name) {
@@ -10,10 +9,13 @@ $.urlParam = function(name) {
 }
 
 let href = window.location.href;
-let communicator = $.urlParam("user") || "pedro";
-let room = "";
+let communicator = $.urlParam("username") || "pedro";
+let room = "room";
+
 
 socket.on('connect', () => {
+    const communicatorText = document.getElementById('communicator');
+    communicatorText.innerHTML = communicator + '<br><small> online</small>';
 
     const now = new Date();
 
@@ -31,12 +33,15 @@ socket.on('connect', () => {
     const communicatorDisconnected = { username: communicator, lastSeenAt };
 
     socket.on('disconnect', () => {
-        //hideStatus(); -> esconde "online" embaixo do nome do usuario
         socket.emit('getDisconnected', communicatorDisconnected);
     });
+
 });
 
-// Executar quando clicar em alguem
+async function deleteChild() {
+    $('#messages-ul').empty();
+} 
+
 async function getRoomName(communicator, user2) {
 
     let ASCIICodescommunicator = [];
@@ -70,8 +75,56 @@ async function getRoomName(communicator, user2) {
         roomASCIICodes[i] = +ASCIICodeFromcommunicator + ASCIICodeFromUser2;
         roomName += JSON.stringify(roomASCIICodes[i]);
     }
+   
+    renderRoom(roomName);
+}
 
-    return roomName;
+function renderRoom(roomName) {
+    
+    const main = $('#main');
+
+    if (main[0].childNodes[3] != undefined) {
+        main[0].removeChild(main[0].childNodes[3])
+        console.log(main[0].childNodes[3], "removido")
+    }
+    
+    const textareaDiv = `<div class="text"><textarea placeholder="Escreva sua mensagem" id="messages-text" name="message"></textarea></div>`
+    if (main[0].childNodes.length < 4) {
+        main.append(textareaDiv)
+    }
+
+    const textarea = document.getElementById('messages-text');
+    let message = "";
+
+    textarea.addEventListener('keydown', (e) => {
+        message = $('textarea').val();
+        if (e.key == "Enter") {
+            let messageObject = { author: communicator, message, room: roomName };
+            renderMessage(messageObject);
+            clearMessageInput();
+            socket.emit('sendMessage', messageObject);
+        }
+    })
+
+    socket.on('receivedMessage', messageObject => {
+        const newm = { ...messageObject, modo: "receievd" }
+        renderMessage(newm);
+        teste();
+    });
+
+    deleteChild();
+
+    const previousMessagesObject = JSON.parse(localStorage.getItem('messages'));
+
+    console.log(roomName)
+
+    for (item of previousMessagesObject) {
+        if (roomName === item.room) {
+            let messageObject = { author: item.author, message: item.message }
+            renderMessage(messageObject);
+        }
+    }
+
 }
 
 async function getCommunicatorContacts() {
@@ -79,87 +132,98 @@ async function getCommunicatorContacts() {
     return new Promise((resolve, reject) => {
         fetch(`http://localhost:3000/pessoas`)
             .then(response => {
-                response.json().then(res => {
-                    resolve(res.contacts);
+                response.json().then(contacts => {
+                    resolve(contacts);
                 })
             })
     })
 
 }
 
-
-// Executar quando carregar a pagina
 function renderContacts() {
     getCommunicatorContacts()
         .then(contacts => {
 
-            contacts.forEach(function(contact) {
-                $("#contactsList")[0].append(`
-				<li>
-					<img class="avatar" width="30" height="30" alt="item.user.name" src="http://lorempixel.com/200/200/" />
-					<p class="name">${contact.name || 'nome'}</p>
-				</li>
-				`);
+            const contactsList = $("#contactsList")[0];
+            let picId = 99;
+
+            contacts.map(contact => {
+                let liElement = document.createElement('li');
+                let img = document.createElement('img');
+                let p = document.createElement('p');
+                let pTextNode = document.createTextNode(contact);
+
+                if (contact != communicator) {
+                    p.setAttribute('class', 'name');
+                    img.setAttribute('class', 'avatar');
+                    img.setAttribute('width', '30');
+                    img.setAttribute('height', '30');
+                    img.setAttribute('src', `http://lorempixel.com/${picId}/${picId}/`);
+
+                    p.appendChild(pTextNode);
+                    liElement.appendChild(img);
+                    liElement.appendChild(p);
+                    contactsList.appendChild(liElement);
+                }
+
+                picId+=43;
+
             })
+            
+            let list = document.getElementById('contactsList').childNodes;
+
+            list.forEach(contact => {
+                if (contact.nodeName != '#text') {
+                    if (contact.textContent != '') {
+                        let contactUsername = contact.textContent;
+                        contact.addEventListener('click', (e) => {
+                            contact.style.background = "#dadada"
+                            contact.style.color = "black"
+                            contact.setAttribute('id', 'active-contact')
+                            getRoomName(communicator, contactUsername);
+
+                            list.forEach(othercontact => {
+                                if (othercontact.nodeName != '#text') {
+                                    if (othercontact.textContent != '') {
+                                        if (othercontact.textContent != contact.textContent) {
+                                            othercontact.setAttribute('id', '')
+                                            othercontact.style.background = "transparent"
+                                            othercontact.style.color = "white";
+                                        }
+                                    }
+                                }
+                            })
+
+                        })
+                    }
+                }
+            })
+            
+
         });
 }
 
-// Handler para submissão de mensagens
-$('#chat').submit(event => {
-    event.preventDefault();
-
-    let author = $('input[name=username]').val().split(" ")[0];
-    let message = $('input[name=message]').val();
-
-    let authorExists = author.length;
-    let messageExists = message.length;
-
-    if (authorExists && messageExists) {
-        let messageObject = { author, message, room };
-        renderMessage(messageObject);
-        clearMessageInput();
-        socket.emit('sendMessage', messageObject);
-    };
-
-});
-
-// Renderiza em tela as mensagens enviadas e recebidas
 function renderMessage(messageObject) {
     let { author, message } = messageObject;
-    let messageElement = `<div class="message"><strong>${author}:</strong> ${message}</div>`;
-    $('.messages').append(messageElement);
+
+    let selfMessage = `<li _v-50b6d54c=""><p class="time" _v-50b6d54c=""><span _v-50b6d54c="">21:2</span></p><div class="main self" _v-50b6d54c=""><div class="text" _v-50b6d54c=""><strong>${author}</strong><br>${message}</div></div></li>`
+    let receivedMessage = `<li v-for="item in session.messages"><p class="time"><span>data</span></p><div class="text"><strong>${author}</strong><br>${message}</div></li>`
+    
+    if (author == communicator) {
+        $('.messages').append(selfMessage);
+    } else {
+        $('.messages').append(receivedMessage);
+    }
+
 };
 
-// Limpa o input das mensagens
 function clearMessageInput() {
-    $('input[name=message]').val("");
+    $('textarea[name=message]').val("");
 }
-
-socket.on('receivedMessage', messageObject => {
-    renderMessage(messageObject);
-});
 
 // Provisório => será substituido por algum método de recuperação de mensagens vindas do drive
 socket.on('previousMessages', previousMessagesObject => {
-
-    for (item of previousMessagesObject) {
-        if (room === item.room) {
-            let messageObject = { author: item.author, message: item.message }
-            renderMessage(messageObject);
-        }
-    }
-
+    localStorage.setItem('messages', JSON.stringify(previousMessagesObject))
 });
-
-// Execução forçada ao carregar pagina
-// getRoomName(communicator, user2)
-//     .then(response => {
-//         room = response;
-//         let roomConnectionData = { sender: communicator, receiver: user2, room };
-//         socket.emit('userConnectedToRoom', roomConnectionData);
-//         const communicatorOnline = { username: communicator, isOnline: true };
-//         socket.emit('getOnline', communicatorOnline);
-//         //showStatus(); -> "online" embaixo do nome do usuario
-//     });
 
 renderContacts();

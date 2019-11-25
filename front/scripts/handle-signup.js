@@ -12,15 +12,17 @@ function handleSignUp(e) {
         },
         contentType: 'application/x-www-form-urlencoded',
         success: function(response) {
-            console.log(response);
+            const { communicator, token } = response;
+            const { username } = communicator;
+            redirect(username, token);
         },
         fail: function(error) {
-            console.log(response);
+            console.log(error);
         }
     });
 
 }
 
 function redirect(username, token) {
-    window.location.href = `chat2.html?user=$${username}&token=${token}`;
+    window.location.href = `chat2.html?username=${username}&token=${token}`;
 }

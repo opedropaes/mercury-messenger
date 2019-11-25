@@ -8,12 +8,11 @@ router.get('/', (req, res) => {
     res.send('mercury-messenger');
 });
 
-<<<<<<< HEAD
 router.post('/registrar', async(req, res) => {
     let isRegistered = false
     authController.register(req, res)
         .then(response => {
-            console.log(response)
+            // console.log(response)
             const { communicator, token } = response;
             isRegistered = communicator.id;
 
@@ -27,27 +26,6 @@ router.post('/registrar', async(req, res) => {
         .catch(err => {
             console.log(err);
         });
-=======
-// Autenticacao
-
-router.post('/registrar', async (req, res) => {
-	let isRegistered = false
-	authController.register(req, res)
-		.then(response => {
-			const { communicator, token } = response;
-			isRegistered = communicator.id;
-
-			if (isRegistered) {
-				res.status(200).json({ communicator, token });
-			} else {
-				res.status(400).send(communicator);
-			}
-
-		})
-		.catch(err => {
-			console.log(err);
-		});
->>>>>>> ba14fad1c1c12263d3decbb1149b3f75d8bc8773
 });
 
 router.post('/entrar', async(req, res) => {

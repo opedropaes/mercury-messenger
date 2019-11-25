@@ -35,8 +35,8 @@ const CommunicatorSchema = new mongoose.Schema({
 		select: false
 	},
 	lastSeenAt: {
-		type: Date,
-		default: Date.now
+		type: String,
+		default: JSON.stringify(Date.now)
 	},
 	isOnline: {
 		type: Boolean,

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,45 +17,25 @@
             <div class="card">
                 <header>
                     <img class="avatar" width="40" height="40" alt="user.name" src="http://lorempixel.com/200/200/" />
-                    <p class="name">pedrost</p>
+                    <p class="name" id="communicator"></p>
                 </header>
-                <footer>
-                    <input class="search" type="text" placeholder="search..." @keyup="onKeyup | debounce 150" />
-                </footer>
             </div>
             <div class="list">
+                <strong>
+                    <hr>
+                    <p style="margin-left: 7%;">Contatos</p>
+                </strong>
                 <ul id="contactsList">
-                    <li>
-                        <img class="avatar" width="30" height="30" alt="item.user.name" src="http://lorempixel.com/200/200/" />
-                        <p class="name">pedrost</p>
-                    </li>
                 </ul>
             </div>
         </div>
-        <div class="main">
+        <div class="main" id="main">
             <div class="message" v-scroll-bottom="session.messages">
-                <ul v-if="session">
-                    <li v-for="item in session.messages">
-                        <p class="time">
-                            <span>data</span>
-                        </p>
-                        <img class="avatar" width="30" height="30" src="http://lorempixel.com/200/200/" />
-                        <div class="text">conteudo recebido</div>
-                    </li>
-                    <li _v-50b6d54c="">
-                        <p class="time" _v-50b6d54c="">
-                            <span _v-50b6d54c="">21:2</span>
-                        </p>
-                        <div class="main self" _v-50b6d54c="">
-                            <img class="avatar" width="30" height="30" _v-50b6d54c="" src="http://lorempixel.com/200/200/" />
-                            <div class="text" _v-50b6d54c="">conteudo enviado</div>
-                        </div>
-                    </li>
+                <ul class="messages" id="messages-ul">
+                    
                 </ul>
             </div>
-            <div class="text">
-                <textarea placeholder="Escreva sua mensagem" v-model="content" @keyup="onKeyup"></textarea>
-            </div>
+
         </div>
     </div>
 </body>
