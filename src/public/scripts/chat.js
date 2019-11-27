@@ -36,6 +36,11 @@ socket.on('connect', () => {
         socket.emit('getDisconnected', communicatorDisconnected);
     });
 
+    socket.on('receivedMessage', messageObject => {
+        const newm = {...messageObject, modo: "receievd" }
+        renderMessage(newm);
+    });
+
 });
 
 async function deleteChild() {
@@ -79,6 +84,42 @@ async function getRoomName(communicator, user2) {
     renderRoom(roomName);
 }
 
+function getOnlyRoomName(communicator, user2) {
+    let ASCIICodescommunicator = [];
+    let ASCIICodesUser2 = [];
+    let roomASCIICodes = [];
+    let roomName = "";
+
+    for (let char of communicator) {
+        ASCIICodescommunicator.push(char.charCodeAt(0));
+    }
+
+    for (let char of user2) {
+        ASCIICodesUser2.push(char.charCodeAt(0));
+    }
+
+    let biggerUsername = 0
+
+    if (ASCIICodescommunicator.length > ASCIICodesUser2.length)
+        biggerUsername = ASCIICodescommunicator.length;
+    else
+        biggerUsername = ASCIICodesUser2.length;
+
+    for (let i = 0; i < biggerUsername; i++) {
+
+        let ASCIICodeFromcommunicator = parseInt(ASCIICodescommunicator[i]);
+        let ASCIICodeFromUser2 = parseInt(ASCIICodesUser2[i]);
+
+        ASCIICodeFromcommunicator = (!isNaN(ASCIICodeFromcommunicator)) ? ASCIICodeFromcommunicator : 0;
+        ASCIICodeFromUser2 = (!isNaN(ASCIICodeFromUser2)) ? ASCIICodeFromUser2 : 0;
+
+        roomASCIICodes[i] = +ASCIICodeFromcommunicator + ASCIICodeFromUser2;
+        roomName += JSON.stringify(roomASCIICodes[i]);
+    }
+
+    return roomName;
+}
+
 function renderRoom(roomName) {
 
     const main = $('#main');
@@ -106,12 +147,6 @@ function renderRoom(roomName) {
         }
     })
 
-    socket.on('receivedMessage', messageObject => {
-        const newm = {...messageObject, modo: "receievd" }
-        renderMessage(newm);
-        teste();
-    });
-
     deleteChild();
 
     const previousMessagesObject = JSON.parse(localStorage.getItem('messages'));
@@ -126,6 +161,26 @@ function renderRoom(roomName) {
     }
 
 }
+
+function reRenderMessages() {
+    const previousMessagesObject = JSON.parse(localStorage.getItem('messages'));
+
+    if ($("#active-contact")[0] && previousMessagesObject.length > $("#messages-ul").children().length) {
+        let roomName = getOnlyRoomName(communicator, $("#active-contact").children()[1].innerText)
+        let lastMessage = previousMessagesObject[previousMessagesObject.length - 1];
+        if (lastMessage) {
+            if (roomName === lastMessage.room) {
+                let messageObject = { author: lastMessage.author, message: lastMessage.message }
+                console.log('rendering last', messageObject)
+                renderMessage(messageObject);
+            }
+        }
+    }
+}
+
+const interv = setInterval(function() {
+    reRenderMessages();
+}, 1000)
 
 async function getCommunicatorContacts() {
 
@@ -206,8 +261,17 @@ function renderContacts() {
 function renderMessage(messageObject) {
     let { author, message } = messageObject;
 
-    let selfMessage = `<li _v-50b6d54c=""><p class="time" _v-50b6d54c=""><span _v-50b6d54c="">21:2</span></p><div class="main self" _v-50b6d54c=""><div class="text" _v-50b6d54c=""><strong>${author}</strong><br>${message}</div></div></li>`
-    let receivedMessage = `<li v-for="item in session.messages"><p class="time"><span>data</span></p><div class="text"><strong>${author}</strong><br>${message}</div></li>`
+    const now = new Date();
+
+    let hour = now.getHours();
+    let minutes = now.getMinutes();
+    hour = (hour < 10) ? ('0' + hour).slice(-2) : hour;
+    minutes = (minutes < 10) ? ('0' + minutes).slice(-2) : minutes;
+
+    const currentDate = `${hour}:${minutes}`;
+
+    let selfMessage = `<li _v-50b6d54c=""><p class="time" _v-50b6d54c=""><span _v-50b6d54c="">${currentDate}</span></p><div class="main self" _v-50b6d54c=""><div class="text" _v-50b6d54c=""><strong>${author}</strong><br>${message}</div></div></li>`
+    let receivedMessage = `<li v-for="item in session.messages"><p class="time"><span>${currentDate}</span></p><div class="text"><strong>${author}</strong><br>${message}</div></li>`
 
     if (author == communicator) {
         $('.messages').append(selfMessage);

@@ -25,6 +25,7 @@ module.exports = function(io) {
             let { author, message, room } = data;
             previousMessagesArray.push({ author, message, room });
             socketClient.to(room).broadcast.emit('receivedMessage', data);
+            socketClient.emit('previousMessages', previousMessagesArray);
         });
 
         socketClient.emit('previousMessages', previousMessagesArray);
