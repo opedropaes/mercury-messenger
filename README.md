@@ -17,7 +17,6 @@ Aplicação web que simula um mensageiro pessoal através do protocolo WebSocket
 
 ## Pacotes
 
-- Node v10.13.10
 - Express >= 4.17.1
 - Mongoose >= 5.7.7
 
