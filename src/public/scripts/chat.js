@@ -164,10 +164,13 @@ function renderRoom(roomName) {
 
 function reRenderMessages() {
     const previousMessagesObject = JSON.parse(localStorage.getItem('messages'));
+    const activePerson = $("#active-contact").children()[1].innerText;
+    let roomName = getOnlyRoomName(communicator, activePerson);
 
-    if ($("#active-contact")[0] && previousMessagesObject.length > $("#messages-ul").children().length) {
-        let roomName = getOnlyRoomName(communicator, $("#active-contact").children()[1].innerText)
-        let lastMessage = previousMessagesObject[previousMessagesObject.length - 1];
+    let roomMessages = previousMessagesObject.filter(function(e) { return e.room === roomName })
+
+    if ($("#active-contact")[0] && roomMessages.length > $("#messages-ul").children().length) {
+        let lastMessage = roomMessages[roomMessages.length - 1];
         if (lastMessage) {
             if (roomName === lastMessage.room) {
                 let messageObject = { author: lastMessage.author, message: lastMessage.message }
