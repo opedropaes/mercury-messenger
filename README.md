@@ -1,6 +1,4 @@
-[![Mercury Logo](https://i.imgur.com/MuCKuL9.png | width=100)](http://localhost:3000/)
-
-<img src="https://i.imgur.com/MuCKuL9.png" alt="Mercury Logo" data-canonical-src="https://i.imgur.com/MuCKuL9.png" width="200" />
+<img src="https://i.imgur.com/MuCKuL9.png" alt="Mercury Logo" data-canonical-src="https://i.imgur.com/MuCKuL9.png" width="250" />
 
 # Trabalho de progWeb
 
