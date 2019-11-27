@@ -158,7 +158,7 @@ function renderContacts() {
                     img.setAttribute('class', 'avatar');
                     img.setAttribute('width', '30');
                     img.setAttribute('height', '30');
-                    img.setAttribute('src', `http://lorempixel.com/${picId}/${picId}/`);
+                    img.setAttribute('src', `https://picsum.photos/id/${picId}/200/200`);
 
                     p.appendChild(pTextNode);
                     liElement.appendChild(img);
