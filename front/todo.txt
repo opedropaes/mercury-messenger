@@ -1,8 +1,0 @@
-1. fazer collection pra salvar contatos
-2. mudar schema pra pegar contatos
-3. fazer load dos contatos ao logar
-4. fazer busca de usuarios em geral
-5. botao de adicionar contato
-6. visto por ultimo
-7. salvar mensagens no server até que sejam lidas
-	-- como fazer essa confirmação de leitura?
