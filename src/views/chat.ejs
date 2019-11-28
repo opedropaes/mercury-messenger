@@ -15,26 +15,25 @@
 
 <body>
     <div id="app">
-        <div class="sidebar" style="overflow-y: scroll">
+        <div class="sidebar">
             <div class="card">
                 <header class="user-header">
                     <img class="avatar" width="40" height="40" alt="user.name" src="https://picsum.photos/200/200/" />
                     <p class="name" id="communicator"></p>
-
                     <a class="logout" href="/"> Sair </a>
                 </header>
             </div>
             <div class="list">
-                <strong>
-                    <hr>
-                    <p style="margin-left: 7%;">Contatos</p>
+				<hr>
+                <strong class="contatos-text">
+                    Contatos
                 </strong>
                 <ul id="contactsList">
                 </ul>
             </div>
         </div>
         <div class="main" id="main">
-            <div class="message" v-scroll-bottom="session.messages">
+            <div class="message">
                 <ul class="messages" id="messages-ul">
 
                 </ul>

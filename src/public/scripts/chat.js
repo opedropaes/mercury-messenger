@@ -1,7 +1,7 @@
 let socket = io('http://localhost:3000'); // Função obtida através do CDN do socket.io
 
-$.urlParam = function(name) {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+$.urlParam = (name) => {
+    let results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results == null) {
         return null;
     }
@@ -37,17 +37,21 @@ socket.on('connect', () => {
     });
 
     socket.on('receivedMessage', messageObject => {
-        const newm = {...messageObject, modo: "receievd" }
+        const newm = {...messageObject, modo: "received" }
         renderMessage(newm);
     });
 
 });
 
-async function deleteChild() {
+socket.on('previousMessages', previousMessagesObject => {
+    localStorage.setItem('messages', JSON.stringify(previousMessagesObject))
+});
+
+const deleteChild = async () => {
     $('#messages-ul').empty();
 }
 
-async function getRoomName(communicator, user2) {
+const getRoomName = async (communicator, user2) => {
 
     let ASCIICodescommunicator = [];
     let ASCIICodesUser2 = [];
@@ -84,7 +88,7 @@ async function getRoomName(communicator, user2) {
     renderRoom(roomName);
 }
 
-function getOnlyRoomName(communicator, user2) {
+const getOnlyRoomName = (communicator, user2) => {
     let ASCIICodescommunicator = [];
     let ASCIICodesUser2 = [];
     let roomASCIICodes = [];
@@ -98,7 +102,7 @@ function getOnlyRoomName(communicator, user2) {
         ASCIICodesUser2.push(char.charCodeAt(0));
     }
 
-    let biggerUsername = 0
+    let biggerUsername = 0;
 
     if (ASCIICodescommunicator.length > ASCIICodesUser2.length)
         biggerUsername = ASCIICodescommunicator.length;
@@ -120,18 +124,35 @@ function getOnlyRoomName(communicator, user2) {
     return roomName;
 }
 
+const getCommunicatorContacts = () => {
+
+    return new Promise((resolve, reject) => {
+        fetch(`http://localhost:3000/users/pessoas`)
+            .then(response => {
+                response.json().then(contacts => {
+                    resolve(contacts);
+                });
+            });
+    });
+
+}
+
+const interv = setInterval(function() {
+    reRenderMessages();
+}, 1000);
+
+
 function renderRoom(roomName) {
 
     const main = $('#main');
 
     if (main[0].childNodes[3] != undefined) {
-        main[0].removeChild(main[0].childNodes[3])
-        console.log(main[0].childNodes[3], "removido")
+        main[0].removeChild(main[0].childNodes[3]);
     }
 
     const textareaDiv = `<div class="text"><textarea placeholder="Escreva sua mensagem" id="messages-text" name="message"></textarea></div>`
     if (main[0].childNodes.length < 4) {
-        main.append(textareaDiv)
+        main.append(textareaDiv);
     }
 
     const textarea = document.getElementById('messages-text');
@@ -151,11 +172,9 @@ function renderRoom(roomName) {
 
     const previousMessagesObject = JSON.parse(localStorage.getItem('messages'));
 
-    console.log(roomName)
-
     for (item of previousMessagesObject) {
         if (roomName === item.room) {
-            let messageObject = { author: item.author, message: item.message }
+            let messageObject = { author: item.author, message: item.message };
             renderMessage(messageObject);
         }
     }
@@ -167,35 +186,17 @@ function reRenderMessages() {
     const activePerson = $("#active-contact").children()[1].innerText;
     let roomName = getOnlyRoomName(communicator, activePerson);
 
-    let roomMessages = previousMessagesObject.filter(function(e) { return e.room === roomName })
+    let roomMessages = previousMessagesObject.filter(function(e) { return e.room === roomName });
 
     if ($("#active-contact")[0] && roomMessages.length > $("#messages-ul").children().length) {
         let lastMessage = roomMessages[roomMessages.length - 1];
         if (lastMessage) {
             if (roomName === lastMessage.room) {
                 let messageObject = { author: lastMessage.author, message: lastMessage.message }
-                console.log('rendering last', messageObject)
                 renderMessage(messageObject);
             }
         }
     }
-}
-
-const interv = setInterval(function() {
-    reRenderMessages();
-}, 1000)
-
-async function getCommunicatorContacts() {
-
-    return new Promise((resolve, reject) => {
-        fetch(`http://localhost:3000/users/pessoas`)
-            .then(response => {
-                response.json().then(contacts => {
-                    resolve(contacts);
-                })
-            })
-    })
-
 }
 
 function renderContacts() {
@@ -287,10 +288,5 @@ function renderMessage(messageObject) {
 function clearMessageInput() {
     $('textarea[name=message]').val("");
 }
-
-// Provisório => será substituido por algum método de recuperação de mensagens vindas do drive
-socket.on('previousMessages', previousMessagesObject => {
-    localStorage.setItem('messages', JSON.stringify(previousMessagesObject))
-});
 
 renderContacts();

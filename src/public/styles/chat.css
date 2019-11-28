@@ -9,6 +9,10 @@
  .user-header {
      position: relative;
  }
+
+ .contatos-text {
+	margin-left: 7%;
+ }
  
  .logout {
      position: absolute;

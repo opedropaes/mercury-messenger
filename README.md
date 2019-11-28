@@ -39,5 +39,5 @@ yarn dev
 ```
 ou
 ```
-nodemon index.js
+node index.js
 ```
