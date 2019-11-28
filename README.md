@@ -15,15 +15,6 @@ Aplicação web que simula um mensageiro pessoal através do protocolo WebSocket
 * [NPM instalado](https://www.npmjs.com/)
 * [NodeJS instalado](https://nodejs.org/en/) - Utilizando v10.13.0
 
-## Pacotes
-
-- Express >= 4.17.1
-- Mongoose >= 5.7.7
-
-## Requisitos
-* [NPM instalado](https://www.npmjs.com/)
-* [NodeJS instalado](https://nodejs.org/en/) - Utilizando v10.13.0
-
 ## Iniciando server
 
 ### Direcione-se a pasta src
